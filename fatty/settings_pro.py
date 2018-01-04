@@ -1,5 +1,7 @@
 from settings import *
 
+ALLOWED_HOSTS = ['api.weblist.site']
+
 DEBUG = False
 
 DATABASES = {
