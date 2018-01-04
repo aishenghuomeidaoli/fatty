@@ -1,6 +1,5 @@
 # _*_ coding: utf-8 _*_
 import os
-import json
 import logging
 import requests
 import sys
@@ -19,7 +18,7 @@ logger = logging.getLogger('aqi')
 
 def main():
     logger.info('-------------start crontab-------------')
-    resp = requests.get('http://127.0.0.1:8082/aqi/start/')
+    resp = requests.get('http://api.weblist.site/aqi/start/')
     logger.info('crontab result: %s' % resp.content)
     logger.info('-------------finish crontab-------------')
     return
