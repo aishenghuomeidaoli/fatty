@@ -24,8 +24,6 @@ def get_html(url):
     """
     try:
         html = requests.get(url).content
-        # response = urllib2.urlopen(url)
-        # html = response.read()
     except ValueError, urllib2.URLError:
         logger.info('!!! error !!! get html error')
         html = ''
@@ -48,9 +46,8 @@ def update_aqi():
         day = int(updated_at[8:10])
         hour = int(updated_at[11:13])
         time = datetime.datetime(year, month, day, hour)
-        # time = datetime.datetime(year, month, day, hour, tzinfo=pytz.timezone('Asia/Shanghai'))
-        # time = local_to_utc(time)
-    except Exception:
+    except Exception as e:
+        logger.info(e.message)
         time = current_hour() + datetime.timedelta(hours=-1)
     if Aqi.objects.filter(time=time).exists():
         return
@@ -60,13 +57,15 @@ def update_aqi():
             pollution_level = int(pollution_level.split('_')[-1])
             if pollution_level < 1 or pollution_level > 6:
                 continue
-        except Exception:
+        except Exception as e:
+            logger.info(e.message)
             continue
         items = city.select('td')
         if not items or len(items) != 9:
             continue
         items = [item.getText() for item in items]
-        city_name, aqi, pm2_5, pm10, so2, no2, co, o3, primary_contaminant = items
+        city_name, aqi, pm2_5, pm10, so2, no2, co, o3, primary_contaminant = \
+            items
         primary_contaminant = primary_contaminant.replace('\n', '')
         primary_contaminant = primary_contaminant.replace('\t', '')
         city_row = City.objects.filter(city_name=city_name).first()
