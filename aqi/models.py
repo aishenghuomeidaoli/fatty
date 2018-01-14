@@ -14,6 +14,9 @@ class City(models.Model):
     def __str__(self):
         return self.city_name
 
+    class Meta:
+        ordering = ['city_code']
+
 
 class Aqi(models.Model):
     city = models.ForeignKey(City)
@@ -29,3 +32,6 @@ class Aqi(models.Model):
     time = models.DateTimeField(default=current_hour())
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        ordering = ['-time']

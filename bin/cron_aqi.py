@@ -13,13 +13,14 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fatty.%s" % env)
 
 django.setup()
 
+from aqi.task import main as aqi_main
+
 logger = logging.getLogger('aqi')
 
 
 def main():
     logger.info('-------------start crontab-------------')
-    resp = requests.get('http://api.weblist.site/aqi/start/')
-    logger.info('crontab result: %s' % resp.content)
+    aqi_main.delay()
     logger.info('-------------finish crontab-------------')
     return
 

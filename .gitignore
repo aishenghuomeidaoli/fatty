@@ -102,3 +102,4 @@ ENV/
 logs/*.log
 .idea/
 migrations/
+aliyun.sql
