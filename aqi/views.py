@@ -15,6 +15,8 @@ def current(request):
           a.id                  id,
           c.city_name           city_name,
           c.city_code           city_code,
+          c.lng                 lng,
+          c.lat                 lat,
           a.aqi                 aqi,
           a.pm2_5               pm2_5,
           a.pm10                pm10,
@@ -28,8 +30,10 @@ def current(request):
         WHERE c.id = a.city_id AND a.time = '{0}'
         ORDER BY c.city_code;""".format(last_time))
     ds = [{
-        'city_name': row.city_name,
-        'city_code': row.city_code,
+        'name': row.city_name,
+        'code': row.city_code,
+        'lng': row.lng,
+        'lat': row.lat,
         'aqi': row.aqi,
         'pm2_5': row.pm2_5,
         'pm10': row.pm10,
@@ -40,7 +44,6 @@ def current(request):
         'pollution_level': row.pl,
         'primary_contaminant': row.pc
     } for row in rows]
-
     return JsonResponse({'code': '200', 'msg': u'成功',
                          'data': {'time': last_time, 'data_set': ds}})
 
