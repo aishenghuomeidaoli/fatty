@@ -44,8 +44,10 @@ def current(request):
         'pollution_level': row.pl,
         'primary_contaminant': row.pc
     } for row in rows]
-    return JsonResponse({'code': '200', 'msg': u'成功',
-                         'data': {'time': last_time, 'data_set': ds}})
+    return JsonResponse(
+        {'code': '200', 'msg': u'成功',
+         'data': {'time': last_time.strftime('%Y-%m-%d %H:%M:%S'),
+                  'data_set': ds}})
 
 
 def cities(request):
@@ -56,7 +58,7 @@ def cities(request):
         province_code = province.city_code
         city_ds = []
         rows = City.objects.filter(city_code__startswith=province_code[:2],
-                                     city_code__endswith='00') \
+                                   city_code__endswith='00') \
             .exclude(city_code__endswith='0000').order_by('city_code')
         for city in rows:
             city_code = city.city_code

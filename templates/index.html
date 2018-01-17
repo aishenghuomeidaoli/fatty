@@ -36,18 +36,21 @@
                    data-toggle="collapse" href="#collapseComponents"
                    data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-soundcloud"></i>
-                    <span class="nav-link-text">空气质量指数</span>
+                    <span class="nav-link-text">空气质量数据</span>
                 </a>
                 <ul class="sidenav-second-level collapse show"
                     id="collapseComponents">
                     <li>
-                        <a class="active" href="/">最新全国数据</a>
+                        <a class="active" href="/">可视化</a>
                     </li>
                     <li>
                         <a href="/">API文档</a>
                     </li>
                 </ul>
             </li>
+        </ul>
+        <ul class="navbar-nav pull-right">
+            <li>hello</li>
         </ul>
         <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">
@@ -62,31 +65,37 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="/">仪表盘</a>
+                <a href="/">空气质量数据</a>
             </li>
-            <li class="breadcrumb-item active">空气质量指数(Air Quality Index)
+            <li class="breadcrumb-item active">可视化
             </li>
         </ol>
         <!-- Area Chart Example-->
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fa fa-map-marker"></i>全国城市AQI数据
-                    </div>
-                    <div class="card-body">
-                        <div id="aqi-map" style="width: 100%;"></div>
-                    </div>
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-map-marker"></i>实时数据&nbsp;&nbsp;&nbsp;&nbsp;更新于&nbsp;<span
+                    id="time"></span>
+                <div class="pull-right">
+                    指标：
+                    <select name="aqi" onchange="aqiChose(this.value)">
+                        <option value="aqi">AQI</option>
+                        <option value="pm2_5">PM2.5</option>
+                        <option value="pm10">PM10</option>
+                        <option value="so2">SO2</option>
+                        <option value="no2">NO2</option>
+                        <option value="co">CO</option>
+                        <option value="o3">O3</option>
+                    </select>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fa fa-pie-chart"></i>全国AQI指数数据
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div id="aqi-map" style="width: 100%;"></div>
                     </div>
-                    <div class="card-body">
+                    <div class="col-lg-6">
                         <div id="aqi-pie"
-                             style="width: 100%; height: 300px"></div>
+                             style="width: 100%;"></div>
                     </div>
                 </div>
             </div>
@@ -972,7 +981,7 @@
 <script src="/static/vendor/echarts/map/js/china.js"></script>
 <script src="/static/js/aqi.js"></script>
 <script type="text/javascript">
-    initAqi('aqi-map', 'aqi-pie');
+    aqiChose('aqi');
 </script>
 </body>
 </html>

@@ -1,34 +1,36 @@
-function initAqi(mapId, pieId) {
+function aqiChose(type) {
     $.get('/api/aqi/current/', function (data) {
         if (data.code != '200') {
             console.log('AQI数据获取失败')
         }
         else {
+            var time = data.data.time;
+            $('#time').html(time);
             var dataSet = data.data.data_set;
-            drawMap(mapId, dataSet);
-            drawPie(pieId, dataSet)
+            drawMap('aqi-map', dataSet, type);
+            drawPie('aqi-pie', dataSet, type);
         }
     })
 }
 
-var convertCurrentDsWithLocation = function (data) {
+var convertCurrentDsWithLocation = function (data, type) {
     var res = [];
     for (var i = 0; i < data.length; i++) {
         res.push({
             name: data[i].name,
-            value: [data[i].lng, data[i].lat, data[i].aqi]
+            value: [data[i].lng, data[i].lat, data[i][type]]
         });
     }
     return res;
 };
 
-var divideCurrentDs = function (data) {
+var divideCurrentDs = function (data, type) {
     var count = {
         'greet': 0, 'good': 0, 'little': 0,
         'middle': 0, 'heavy': 0, 'max': 0
     };
     for (var i = 0; i < data.length; i++) {
-        var aqi = data[i].aqi;
+        var aqi = data[i][type];
         if (aqi <= 50) {
             count.greet = count.greet + 1
         }
@@ -49,29 +51,29 @@ var divideCurrentDs = function (data) {
         }
     }
     return [
-        {'name': '严重污染', 'value': count.max},
-        {'name': '重度污染', 'value': count.heavy},
-        {'name': '中度污染', 'value': count.middle},
-        {'name': '轻度污染', 'value': count.little},
-        {'name': '良', 'value': count.good},
-        {'name': '优', 'value': count.greet}
+        {'name': '严重(300+)', 'value': count.max},
+        {'name': '重度(200+)', 'value': count.heavy},
+        {'name': '中度(150+)', 'value': count.middle},
+        {'name': '轻度(100+)', 'value': count.little},
+        {'name': '良好(50+)', 'value': count.good},
+        {'name': '优秀(<=50)', 'value': count.greet}
     ]
 }
 
-function drawMap(element_id, currentDs) {
+function drawMap(element_id, currentDs, type) {
     var ele = $('#' + element_id);
     ele.css('height', ele.css('width'));
     var myChart = echarts.init(document.getElementById(element_id));
     $(document).ready(function () {
         var option = {
-            backgroundColor: '#404a59',
+            backgroundColor: '#868e96',
             title: {
-                text: '全国主要城市空气质量',
+                text: '地理分布图',
                 subtext: 'data from api.weblist.site',
                 sublink: 'http://api.weblist.site',
                 x: 'center',
                 textStyle: {
-                    color: '#fff'
+                    color: '#000000'
                 }
             },
             tooltip: {
@@ -84,18 +86,18 @@ function drawMap(element_id, currentDs) {
                 orient: 'vertical',
                 y: 'bottom',
                 x: 'right',
-                data: ['pm2.5'],
+                data: [type],
                 textStyle: {
                     color: '#fff'
                 }
             },
             visualMap: {
                 min: 0,
-                max: 200,
+                max: 500,
                 calculable: true,
-                color: ['#d94e5d', '#eac736', '#50a3ba'],
+                color: ['#A52A2A', '#CD0000', '#78ea36'],
                 textStyle: {
-                    color: '#fff'
+                    color: '#000'
                 }
             },
             geo: {
@@ -107,11 +109,11 @@ function drawMap(element_id, currentDs) {
                 },
                 itemStyle: {
                     normal: {
-                        areaColor: '#323c48',
+                        areaColor: '#EEE5DE',
                         borderColor: '#111'
                     },
                     emphasis: {
-                        areaColor: '#2a333d'
+                        areaColor: '#EEDFCC'
                     }
                 }
             },
@@ -120,8 +122,8 @@ function drawMap(element_id, currentDs) {
                     name: 'pm2.5',
                     type: 'scatter',
                     coordinateSystem: 'geo',
-                    data: convertCurrentDsWithLocation(currentDs),
-                    symbolSize: 12,
+                    data: convertCurrentDsWithLocation(currentDs, type),
+                    symbolSize: 6,
                     label: {
                         normal: {
                             show: false
@@ -134,6 +136,11 @@ function drawMap(element_id, currentDs) {
                         emphasis: {
                             borderColor: '#fff',
                             borderWidth: 1
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: 'blue'
+                            }
                         }
                     }
                 }
@@ -143,15 +150,14 @@ function drawMap(element_id, currentDs) {
     });
 }
 
-function drawPie(element_id, currentDs) {
+function drawPie(element_id, currentDs, type) {
     var ele = $('#' + element_id);
     ele.css('height', ele.css('width'));
     var myChart = echarts.init(document.getElementById(element_id));
     $(document).ready(function () {
         option = {
             title: {
-                text: 'AQI梯度分布图',
-                subtext: '纯属虚构',
+                text: '梯度分类图',
                 x: 'center'
             },
             tooltip: {
@@ -161,15 +167,16 @@ function drawPie(element_id, currentDs) {
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: ['严重污染', '重度污染', '中度污染', '轻度污染', '良', '优']
+                data: ['严重(300+)', '重度(200+)', '中度(150+)', '轻度(100+)', '良好(50+)', '优秀(<=50)']
             },
+            color: ['#A52A2A', '#8B008B','#EE2C2C', '#EEB422', '#EEEE00', '#78ea36'],
             series: [
                 {
                     name: 'AQI',
                     type: 'pie',
-                    radius: '60%',
-                    center: ['50%', '60%'],
-                    data: divideCurrentDs(currentDs),
+                    radius: '55%',
+                    center: ['55%', '60%'],
+                    data: divideCurrentDs(currentDs, type),
                     itemStyle: {
                         emphasis: {
                             shadowBlur: 10,
