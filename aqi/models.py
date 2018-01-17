@@ -8,11 +8,16 @@ from aqi.backends import current_hour
 class City(models.Model):
     city_code = models.CharField(max_length=64, unique=True)
     city_name = models.CharField(max_length=256)
+    lng = models.FloatField()
+    lat = models.FloatField()
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.city_name
+
+    class Meta:
+        ordering = ['city_code']
 
 
 class Aqi(models.Model):
@@ -29,3 +34,6 @@ class Aqi(models.Model):
     time = models.DateTimeField(default=current_hour())
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        ordering = ['-time']

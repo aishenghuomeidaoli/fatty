@@ -1,6 +1,6 @@
 from settings import *
 
-ALLOWED_HOSTS = ['api.weblist.site']
+ALLOWED_HOSTS = ['api.weblist.site', '106.14.193.52']
 
 DEBUG = False
 
@@ -15,3 +15,5 @@ DATABASES = {
         'CHARSET': 'utf-8',
     }
 }
+
+WSGI_APPLICATION = 'fatty.wsgi_pro.application'

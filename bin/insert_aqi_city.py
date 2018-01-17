@@ -16,7 +16,7 @@ from aqi.models import City
 
 
 def main():
-    city_file = os.path.join(PROJECT_DIR, 'bin/aqi_city.json')
+    city_file = os.path.join(PROJECT_DIR, 'bin/city.json')
     with open(city_file) as f:
         items = json.loads(f.read())
         for city_code, city_name in items.iteritems():

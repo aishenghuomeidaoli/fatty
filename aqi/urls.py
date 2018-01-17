@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
-from aqi.views import start
+from aqi.views import current
 
 urlpatterns = [
-    url(r'^start/', start, name='aqi-start'),
+    url(r'^current/', current, name='aqi-current'),
 ]
