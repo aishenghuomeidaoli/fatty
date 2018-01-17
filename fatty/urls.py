@@ -24,4 +24,5 @@ urlpatterns = [
                   url(r'^$', index, name='index'),
                   url(r'^dashboard/', include('dashboard.urls')),
                   url(r'^api/aqi/', include('aqi.urls'))
-              ]
+              ] + static.static(settings.STATIC_URL,
+                                document_root=settings.STATIC_ROOT)
