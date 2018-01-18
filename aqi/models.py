@@ -37,3 +37,12 @@ class Aqi(models.Model):
 
     class Meta:
         ordering = ['-time']
+
+
+class SystemCache(models.Model):
+    key = models.CharField(max_length=32, unique=True)
+    cache = models.TextField()
+    time = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = 'system_cache'
