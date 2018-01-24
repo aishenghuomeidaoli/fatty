@@ -37,6 +37,8 @@ MarkupSafe==1.0
 mongokit==0.9.1.1
 MySQL-python==1.2.5
 ndg-httpsclient==0.4.2
+numpy==1.14.0
+pandas==0.22.0
 parsel==1.2.0
 pathlib2==2.3.0
 pexpect==4.2.1
@@ -55,6 +57,7 @@ PyMySQL==0.7.11
 pyOpenSSL==17.1.0
 pysmi==0.1.3
 pysnmp==4.3.7
+python-dateutil==2.6.1
 pytz==2017.2
 queuelib==1.4.2
 redis==2.10.5
@@ -66,6 +69,7 @@ simplegeneric==0.8.1
 six==1.10.0
 SQLAlchemy==1.1.13
 traitlets==4.3.2
+tushare==1.1.3
 Twisted==17.9.0
 urllib3==1.21.1
 uWSGI==2.0.15

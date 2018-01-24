@@ -10,15 +10,24 @@ class Stock(models.Model):
     code = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     current = models.FloatField()
+    change = models.FloatField()
     volume = models.FloatField()
+    percent = models.FloatField()
     high = models.FloatField()
     high52w = models.FloatField()
-    percent = models.FloatField()
+    low = models.FloatField()
+    low52w = models.FloatField()
+
+    pettm = models.FloatField()
+    hasexist = models.BooleanField()
+    amount = models.FloatField()
+    type = models.IntegerField()
+    marketcapital = models.FloatField()
 
     update_time = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.city_name
+        return '{0}({1})'.format(self.name, self.symbol)
 
     class Meta:
         db_table = 'stock'

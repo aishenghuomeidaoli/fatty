@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_celery_results',
     'aqi',
+    'stock'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -139,6 +140,14 @@ LOGGING = {
             'backupCount': 5,
             'formatter': 'standard',
         },
+        'stock': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_PATH, 'stock.log'),
+            'maxBytes': 1024 * 1024 * 10,
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
     },
     'loggers': {
         'django': {
@@ -153,6 +162,11 @@ LOGGING = {
         },
         'aqi': {
             'handlers': ['console', 'aqi'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'stock': {
+            'handlers': ['console', 'stock'],
             'level': 'DEBUG',
             'propagate': True
         },

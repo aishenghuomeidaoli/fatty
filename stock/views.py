@@ -33,6 +33,7 @@ def get_list():
         stocks = data['stocks']
         for stock in stocks:
             print "    {'code': '%s', 'name': u'%s', 'current': '%s'}," % (stock['symbol'], stock['name'], stock['current'])
+        exit()
     return
 
 

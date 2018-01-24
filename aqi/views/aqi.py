@@ -11,7 +11,6 @@ logger = logging.getLogger('aqi')
 
 def current(request):
     last_time = Aqi.objects.first().time
-    SystemCache.objects.update_or_create()
     if SystemCache.objects.filter(key='aqi_current', time=last_time).exists():
         cache = SystemCache.objects.get(key='aqi_current', time=last_time)
         data = json.loads(cache.cache)
