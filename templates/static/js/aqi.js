@@ -147,6 +147,7 @@ function drawMap(element_id, currentDs, type) {
             ]
         };
         myChart.setOption(option);
+        window.onresize = myChart.resize;
     });
 }
 

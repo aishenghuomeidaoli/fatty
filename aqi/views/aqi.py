@@ -11,6 +11,7 @@ logger = logging.getLogger('aqi')
 
 def current(request):
     last_time = Aqi.objects.first().time
+    SystemCache.objects.update_or_create()
     if SystemCache.objects.filter(key='aqi_current', time=last_time).exists():
         cache = SystemCache.objects.get(key='aqi_current', time=last_time)
         data = json.loads(cache.cache)
@@ -50,8 +51,8 @@ def current(request):
             'primary_contaminant': row.pc
         } for row in rows]
         data = {'data_set': ds}
-        cache = SystemCache(key='aqi_current', time=last_time,
-                            cache=json.dumps(data))
-        cache.save()
+        SystemCache.objects.update_or_create(
+            key='aqi_current',
+            defaults={'time': last_time, 'cache': json.dumps(data)})
     data['time'] = last_time.strftime('%Y-%m-%d %H:%M:%S')
     return JsonResponse({'code': '200', 'msg': u'成功', 'data': data})
