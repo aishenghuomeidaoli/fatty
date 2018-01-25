@@ -81,78 +81,78 @@ def update_stocks():
             })
     return
 
-
-def judge(code):
-    """判断是否为上吊线
-
-    :param code:
-    :return:
-    """
-    url = url_stat.format(code, int(time.time() * 1000))
-    r = Request('GET', url, headers=headers)
-    data = http(r).values()[0]
-    start, end, high, low = float(data['open']), float(data['current']), float(
-        data['high']), float(data['low'])
-    range_rise = abs(start - end)
-    range_wave = abs(high - low)
-    if range_rise != 0 and 3 * range_rise < range_wave:
-        return int(range_wave / range_rise)
-    return False
-
-
-def stock_filter():
-    """遍历查找
-
-    :return:
-    """
-    data = {}
-    count = 1
-    for stock in constant.stock:
-        count += 1
-        if count > 500:
-            break
-        price = float(stock['current'])
-        if price == 0 or 1 < price < 10:
-            continue
-        result = judge(stock['code'])
-        if result:
-            if result not in data:
-                data[result] = [{'name': stock['name'],
-                                 'url': url_detail.format(stock['code'])}]
-            else:
-                data[result].append({'name': stock['name'],
-                                     'url': url_detail.format(stock['code'])})
-    return data
-
-
-@shared_task
-def main():
-    data = stock_filter()
-    for i in sorted(data, reverse=True):
-        print i, data[i]
-        # session.commit()
-
-
-def update_script():
-    count = 1
-    for stock in constant.stock:
-        count += 1
-        # if count > 100:
-        #     break
-        price = float(stock['current'])
-        if price == 0 or 10 < price < 500:
-            continue
-        result = judge(stock['code'])
-        if result:
-            row = session.query(Stock).filter_by(code=stock['code'],
-                                                 date=datetime.datetime.now().date()).first()
-            if row:
-                row.rate = result
-            else:
-                row = Stock(code=stock['code'], name=stock['name'],
-                            url=url_detail.format(stock['code']), rate=result)
-            session.add(row)
-    session.commit()
+#
+# def judge(code):
+#     """判断是否为上吊线
+#
+#     :param code:
+#     :return:
+#     """
+#     url = url_stat.format(code, int(time.time() * 1000))
+#     r = Request('GET', url, headers=headers)
+#     data = http(r).values()[0]
+#     start, end, high, low = float(data['open']), float(data['current']), float(
+#         data['high']), float(data['low'])
+#     range_rise = abs(start - end)
+#     range_wave = abs(high - low)
+#     if range_rise != 0 and 3 * range_rise < range_wave:
+#         return int(range_wave / range_rise)
+#     return False
+#
+#
+# def stock_filter():
+#     """遍历查找
+#
+#     :return:
+#     """
+#     data = {}
+#     count = 1
+#     for stock in constant.stock:
+#         count += 1
+#         if count > 500:
+#             break
+#         price = float(stock['current'])
+#         if price == 0 or 1 < price < 10:
+#             continue
+#         result = judge(stock['code'])
+#         if result:
+#             if result not in data:
+#                 data[result] = [{'name': stock['name'],
+#                                  'url': url_detail.format(stock['code'])}]
+#             else:
+#                 data[result].append({'name': stock['name'],
+#                                      'url': url_detail.format(stock['code'])})
+#     return data
+#
+#
+# @shared_task
+# def main():
+#     data = stock_filter()
+#     for i in sorted(data, reverse=True):
+#         print i, data[i]
+#         # session.commit()
+#
+#
+# def update_script():
+#     count = 1
+#     for stock in constant.stock:
+#         count += 1
+#         # if count > 100:
+#         #     break
+#         price = float(stock['current'])
+#         if price == 0 or 10 < price < 500:
+#             continue
+#         result = judge(stock['code'])
+#         if result:
+#             row = session.query(Stock).filter_by(code=stock['code'],
+#                                                  date=datetime.datetime.now().date()).first()
+#             if row:
+#                 row.rate = result
+#             else:
+#                 row = Stock(code=stock['code'], name=stock['name'],
+#                             url=url_detail.format(stock['code']), rate=result)
+#             session.add(row)
+#     session.commit()
 
 
 if __name__ == '__main__':
