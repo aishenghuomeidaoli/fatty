@@ -31,4 +31,4 @@ class Stock(models.Model):
 
     class Meta:
         db_table = 'stock'
-        ordering = ['city_code']
+        ordering = ['symbol']
