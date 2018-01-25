@@ -1,14 +1,14 @@
 # _*_ coding: utf-8 _*_
 from __future__ import absolute_import, unicode_literals
 
-import datetime
 import time
 import logging
+import tushare as ts
 
 from celery import shared_task
 from requests import Request, Session
 
-from stock.models import Stock
+from stock.models import Stock, StockKDay
 
 logger = logging.getLogger('stock')
 
@@ -81,79 +81,40 @@ def update_stocks():
             })
     return
 
-#
-# def judge(code):
-#     """判断是否为上吊线
-#
-#     :param code:
-#     :return:
-#     """
-#     url = url_stat.format(code, int(time.time() * 1000))
-#     r = Request('GET', url, headers=headers)
-#     data = http(r).values()[0]
-#     start, end, high, low = float(data['open']), float(data['current']), float(
-#         data['high']), float(data['low'])
-#     range_rise = abs(start - end)
-#     range_wave = abs(high - low)
-#     if range_rise != 0 and 3 * range_rise < range_wave:
-#         return int(range_wave / range_rise)
-#     return False
-#
-#
-# def stock_filter():
-#     """遍历查找
-#
-#     :return:
-#     """
-#     data = {}
-#     count = 1
-#     for stock in constant.stock:
-#         count += 1
-#         if count > 500:
-#             break
-#         price = float(stock['current'])
-#         if price == 0 or 1 < price < 10:
-#             continue
-#         result = judge(stock['code'])
-#         if result:
-#             if result not in data:
-#                 data[result] = [{'name': stock['name'],
-#                                  'url': url_detail.format(stock['code'])}]
-#             else:
-#                 data[result].append({'name': stock['name'],
-#                                      'url': url_detail.format(stock['code'])})
-#     return data
-#
-#
-# @shared_task
-# def main():
-#     data = stock_filter()
-#     for i in sorted(data, reverse=True):
-#         print i, data[i]
-#         # session.commit()
-#
-#
-# def update_script():
-#     count = 1
-#     for stock in constant.stock:
-#         count += 1
-#         # if count > 100:
-#         #     break
-#         price = float(stock['current'])
-#         if price == 0 or 10 < price < 500:
-#             continue
-#         result = judge(stock['code'])
-#         if result:
-#             row = session.query(Stock).filter_by(code=stock['code'],
-#                                                  date=datetime.datetime.now().date()).first()
-#             if row:
-#                 row.rate = result
-#             else:
-#                 row = Stock(code=stock['code'], name=stock['name'],
-#                             url=url_detail.format(stock['code']), rate=result)
-#             session.add(row)
-#     session.commit()
 
+@shared_task
+def update_stock_k_day():
+    stocks = Stock.objects.all()
+    for stock in stocks:
+        code = stock.code
+        if not code.isdigit():
+            continue
+        ds = ts.get_hist_data(code)
+        ds = ds.T.to_dict()
+        for date, data in ds.iteritems():
+            open_price = data.get('open')
+            close = data.get('close')
+            low = data.get('low')
+            high = data.get('high')
+            price_change = data.get('price_change')
+            p_change = data.get('p_change')
+            volume = data.get('volume')
+            ma5 = data.get('ma5')
+            ma10 = data.get('ma10')
+            ma20 = data.get('ma20')
+            StockKDay.objects.update_or_create(code=code, date=date, defaults={
+                'stock_id': stock.id,
+                'open': open_price,
+                'close': close,
+                'low': low,
+                'high': high,
+                'price_change': price_change,
+                'p_change': p_change,
+                'volume': volume,
+                'ma5': ma5,
+                'ma10': ma10,
+                'ma20': ma20
+            })
 
 if __name__ == '__main__':
     # main()
