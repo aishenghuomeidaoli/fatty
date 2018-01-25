@@ -13,7 +13,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fatty.%s" % env)
 
 django.setup()
 
-from aqi.task import main as aqi_main
+from aqi.tasks import main as aqi_main
 
 logger = logging.getLogger('aqi')
 

@@ -12,7 +12,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fatty.%s" % env)
 
 django.setup()
 
-from stock.task import update_stocks
+from stock.tasks import update_stocks
 
 logger = logging.getLogger('stock')
 
