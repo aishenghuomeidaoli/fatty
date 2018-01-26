@@ -37,7 +37,7 @@ class Stock(models.Model):
 class StockKDay(models.Model):
     stock = models.ForeignKey(Stock)
     code = models.CharField(max_length=32)
-    date = models.DateField(auto_now=True, auto_now_add=True)
+    date = models.DateField()
 
     open = models.FloatField()
     close = models.FloatField()

@@ -62,6 +62,7 @@ def update_stocks():
             marketcapital = stock.get('marketcapital')
 
             Stock.objects.update_or_create(symbol=symbol, defaults={
+                'symbol': symbol,
                 'code': code,
                 'name': name,
                 'current': None if current == '' else current,
@@ -90,8 +91,11 @@ def update_stock_k_day():
         if not code.isdigit():
             continue
         ds = ts.get_hist_data(code)
+        if ds is None:
+            continue
         ds = ds.T.to_dict()
         for date, data in ds.iteritems():
+            print date
             open_price = data.get('open')
             close = data.get('close')
             low = data.get('low')
@@ -103,6 +107,8 @@ def update_stock_k_day():
             ma10 = data.get('ma10')
             ma20 = data.get('ma20')
             StockKDay.objects.update_or_create(code=code, date=date, defaults={
+                'code': code,
+                'date': date,
                 'stock_id': stock.id,
                 'open': open_price,
                 'close': close,
