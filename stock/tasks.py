@@ -1,6 +1,7 @@
 # _*_ coding: utf-8 _*_
 from __future__ import absolute_import, unicode_literals
 
+import datetime
 import time
 import logging
 import tushare as ts
@@ -86,16 +87,16 @@ def update_stocks():
 @shared_task
 def update_stock_k_day():
     stocks = Stock.objects.all()
+    start = datetime.date.today() + datetime.timedelta(days=-5)
     for stock in stocks:
         code = stock.code
         if not code.isdigit():
             continue
-        ds = ts.get_hist_data(code)
+        ds = ts.get_hist_data(code, start=str(start))
         if ds is None:
             continue
         ds = ds.T.to_dict()
         for date, data in ds.iteritems():
-            print date
             open_price = data.get('open')
             close = data.get('close')
             low = data.get('low')
