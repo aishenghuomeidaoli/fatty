@@ -12,7 +12,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fatty.%s" % env)
 
 django.setup()
 
-from stock.tasks import update_stocks
+from stock.tasks import update_stocks, update_stock_k_day
 
 logger = logging.getLogger('stock')
 
@@ -20,6 +20,7 @@ logger = logging.getLogger('stock')
 def main():
     logger.info('-------------start crontab-------------')
     update_stocks.delay()
+    update_stock_k_day.delay()
     logger.info('-------------finish crontab-------------')
     return
 
