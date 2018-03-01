@@ -197,4 +197,4 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'fatty')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "templates/static")]
 
-AQI_URL = 'http://datacenter.mep.gov.cn:8099/aqiweb2/'
+AQI_URL = 'http://datacenter.mep.gov.cn/aqiweb2/'
