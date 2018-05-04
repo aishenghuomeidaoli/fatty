@@ -88,15 +88,15 @@ def update_aqi():
 
 
 def cycle():
-    while True:
-        try:
-            update_aqi()
-            logger.info(
-                '==============finish grabing aqi at %s=============' % now())
-            return
-        except Exception, e:
-            logger.info('!!!!!!failed cause: %s' % e)
-            continue
+    # while True:
+    try:
+        update_aqi()
+        logger.info(
+            '==============finish grabing aqi at %s=============' % now())
+        return
+    except Exception, e:
+        logger.info('!!!!!!failed cause: %s' % e)
+        # continue
 
 
 @shared_task
