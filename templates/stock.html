@@ -28,7 +28,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="accordion">
-            <li class="nav-item active" data-toggle="tooltip"
+            <li class="nav-item" data-toggle="tooltip"
                 data-placement="right"
                 title="Components">
                 <a class="nav-link nav-link-collapse"
@@ -37,16 +37,16 @@
                     <i class="fa fa-fw fa-soundcloud"></i>
                     <span class="nav-link-text">空气质量数据</span>
                 </a>
-                <ul class="sidenav-second-level collapse show" id="aqi">
+                <ul class="sidenav-second-level collapse" id="aqi">
                     <li>
-                        <a class="active" href="/">可视化</a>
+                        <a href="/">可视化</a>
                     </li>
                     <li>
                         <a href="/aqi/doc/">API文档</a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip"
+            <li class="nav-item active" data-toggle="tooltip"
                 data-placement="right"
                 title="Components">
                 <a class="nav-link nav-link-collapse collapsed"
@@ -55,9 +55,9 @@
                     <i class="fa fa-fw fa-bar-chart-o"></i>
                     <span class="nav-link-text">股票数据</span>
                 </a>
-                <ul class="sidenav-second-level collapse" id="stock">
+                <ul class="sidenav-second-level collapse show" id="stock">
                     <li>
-                        <a href="/dashboard/stock/">可视化</a>
+                        <a class="active" href="/dashboard/stock/">可视化</a>
                     </li>
                     <li>
                         <a href="/dashboard/stock/doc/">API文档</a>
@@ -83,13 +83,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div id="aqi-map" style="width: 100%;"></div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div id="aqi-pie"
-                             style="width: 100%;"></div>
-                    </div>
+                    <div id="stock-chart" style="width: 100%"></div>
                 </div>
             </div>
         </div>
@@ -113,20 +107,21 @@
 <script src="/static/vendor/echarts/map/js/china.js"></script>
 <script src="/static/js/sb-admin.min.js"></script>
 <script src="/static/js/sb-admin-datatables.min.js"></script>
-<script src="/static/js/aqi.js"></script>
+<script src="/static/js/stock.js"></script>
 <script type="text/javascript">
-    $.get('/api/aqi/current/', function (data) {
-        if (data.code != '200') {
-            console.log('AQI数据获取失败')
-        }
-        else {
-            var time = data.data.time;
-            $('#time').html(time);
-            var dataSet = data.data.data_set;
-            drawMap('aqi-map', dataSet, 'aqi');
-            drawPie('aqi-pie', dataSet, 'aqi');
-        }
-    });
+    drawKLine('stock-chart')
+    {#    $.get('/api/aqi/current/', function (data) {#}
+    {#        if (data.code != '200') {#}
+    {#            console.log('AQI数据获取失败')#}
+    {#        }#}
+    {#        else {#}
+    {#            var time = data.data.time;#}
+    {#            $('#time').html(time);#}
+    {#            var dataSet = data.data.data_set;#}
+    {#            drawMap('aqi-map', dataSet, 'aqi');#}
+    {#            drawPie('aqi-pie', dataSet, 'aqi');#}
+    {#        }#}
+    {#    });#}
 </script>
 </body>
 </html>

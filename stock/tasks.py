@@ -123,6 +123,14 @@ def update_stock_k_day():
                 'ma20': ma20
             })
 
+
+@shared_task
+def get_best_stocks(days):
+    stocks = Stock.objects.all()
+    start = datetime.date.today() + datetime.timedelta(days=days)
+    for stock in stocks:
+        pass
+
 if __name__ == '__main__':
     # main()
     # get_list()

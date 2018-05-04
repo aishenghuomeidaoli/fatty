@@ -16,13 +16,18 @@ Including another URLconf
 """
 from django.conf.urls import url, include, static
 from django.conf import settings
-from dashboard.views import index
+from dashboard.views import aqi
+from excise import views
 
 # from django.contrib import admin
 
 urlpatterns = [
-                  url(r'^$', index, name='index'),
+                  url(r'^$', aqi, name='index'),
+                  url(r'^excise-a/', views.a),
+                  url(r'^excise-b/', views.b),
+                  url(r'^excise-c/', views.c),
                   url(r'^dashboard/', include('dashboard.urls')),
-                  url(r'^api/aqi/', include('aqi.urls'))
+                  url(r'^api/aqi/', include('aqi.urls')),
+                  url(r'^api/stock/', include('stock.urls')),
               ] + static.static(settings.STATIC_URL,
                                 document_root=settings.STATIC_ROOT)

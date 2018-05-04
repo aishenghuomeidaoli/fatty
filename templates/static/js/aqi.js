@@ -1,18 +1,3 @@
-function aqiChose(type) {
-    $.get('/api/aqi/current/', function (data) {
-        if (data.code != '200') {
-            console.log('AQI数据获取失败')
-        }
-        else {
-            var time = data.data.time;
-            $('#time').html(time);
-            var dataSet = data.data.data_set;
-            drawMap('aqi-map', dataSet, type);
-            drawPie('aqi-pie', dataSet, type);
-        }
-    })
-}
-
 var convertCurrentDsWithLocation = function (data, type) {
     var res = [];
     for (var i = 0; i < data.length; i++) {
@@ -170,7 +155,7 @@ function drawPie(element_id, currentDs, type) {
                 left: 'left',
                 data: ['严重(300+)', '重度(200+)', '中度(150+)', '轻度(100+)', '良好(50+)', '优秀(<=50)']
             },
-            color: ['#A52A2A', '#8B008B','#EE2C2C', '#EEB422', '#EEEE00', '#78ea36'],
+            color: ['#A52A2A', '#8B008B', '#EE2C2C', '#EEB422', '#EEEE00', '#78ea36'],
             series: [
                 {
                     name: 'AQI',

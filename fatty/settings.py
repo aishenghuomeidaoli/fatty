@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_celery_results',
     'aqi',
-    'stock'
+    'stock',
+    'excise'
 ]
 
 MIDDLEWARE_CLASSES = [

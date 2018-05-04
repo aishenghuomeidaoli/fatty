@@ -1,11 +1,9 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render_to_response
 
 
-# Create your views here.
-
-def index(request):
+def aqi(request):
     return render_to_response('index.html')
 
 
-def china(request):
-    return render_to_response('aqi-china.html')
+def stock(request):
+    return render_to_response('stock.html')

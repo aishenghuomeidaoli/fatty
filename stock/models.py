@@ -27,7 +27,7 @@ class Stock(models.Model):
     update_time = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return '{0}({1})'.format(self.name, self.symbol)
+        return u'{0}({1})'.format(self.name, self.symbol)
 
     class Meta:
         db_table = 'stock'
