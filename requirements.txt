@@ -16,7 +16,7 @@ constantly==15.1.0
 cryptography==1.9
 cssselect==1.0.1
 decorator==4.1.2
-Django==1.9
+Django==1.11.28
 django-celery-results==1.0.1
 email==4.0.2
 enum34==1.1.6
