@@ -51,7 +51,7 @@ pyasn1-modules==0.2.1
 pycparser==2.18
 pycryptodome==3.4.6
 PyDispatcher==2.0.5
-Pygments==2.2.0
+Pygments==2.7.4
 pymongo==2.9
 PyMySQL==0.7.11
 pyOpenSSL==17.1.0
